@@ -16,3 +16,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include_recipe 'chef-client::default'
+include_recipe 'chef-client::delete_validation'
