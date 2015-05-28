@@ -7,3 +7,4 @@ long_description 'Installs/Configures windows_base'
 version '0.1.0'
 
 depends 'chef-client', '~> 4.3.0'
+depends 'powershell', '~> 3.1.0'
