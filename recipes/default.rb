@@ -19,6 +19,33 @@
 include_recipe 'chef-client::default'
 include_recipe 'chef-client::delete_validation'
 
+# Set up for DSC
+
+include_recipe 'powershell::powershell5'
+
+powershell "disable RefreshMode" do
+  code <<-EOH
+  # create a configuration command to generate a meta.mof to set
+  # # Local Configuration Manager settings
+  Configuration LCMSettings {
+    Node localhost {
+      LocalConfigurationManager {
+        RefreshMode = 'Disabled'
+      }
+     }
+   }
+  
+  #  Run the configuration command and generate the meta.mof to configure
+  # a local configuration manager
+  LCMSettings
+  
+  # Apply the local configuration manager settings found in the LCMSettings
+  # folder (by default configurations are generated to a folder in the current
+  # working directory named for the configuration command name
+  Set-DscLocalConfigurationManager -path ./LCMSettings)
+  EOH
+end
+
 # Use DSC resource to add some users and groups
 
 dsc_resource "demogroupcreate" do
